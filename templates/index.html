@@ -33,3 +33,22 @@
         {% endfor %}
     </div>
 </section>
+
+
+<!-- ===== Як замовити ===== -->
+<section class="mt-12 bg-white rounded-3xl p-6 md:p-10 shadow">
+    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark text-center mb-8">Як зробити замовлення</h2>
+    <ol class="grid gap-6 md:grid-cols-3 text-center">
+        <li><span class="text-4xl">1️⃣</span><p class="mt-2 font-semibold">Оберіть букет у каталозі</p></li>
+        <li><span class="text-4xl">2️⃣</span><p class="mt-2 font-semibold">Зателефонуйте або напишіть нам</p></li>
+        <li><span class="text-4xl">3️⃣</span><p class="mt-2 font-semibold">Отримайте букет у зручний час</p></li>
+    </ol>
+    <div class="text-center mt-8">
+        <a href="{{ url_for('contacts') }}"
+           class="inline-block bg-brand text-white font-bold px-8 py-3 rounded-full hover:bg-brand-dark transition">
+            Звʼязатися з нами
+        </a>
+    </div>
+</section>
+
+{% endblock %}
