@@ -14,3 +14,22 @@
         Переглянути каталог
     </a>
 </section>
+
+<!-- ===== Переваги ===== -->
+{% set advantages = [
+    ('🌿', 'Завжди свіжі', 'Квіти надходять від постачальників щотижня й зберігаються в охолоджених камерах.'),
+    ('🚚', 'Швидка доставка', 'Привеземо букет у день замовлення — по місту від 2 годин.'),
+    ('🎁', 'Подарункове пакування', 'Безкоштовно прикрасимо букет стрічкою та додамо листівку.')
+] %}
+<section class="mt-12">
+    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark text-center mb-8">Чому обирають Flowery</h2>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {% for icon, title, text in advantages %}
+        <div class="bg-white rounded-2xl p-6 shadow text-center hover:shadow-xl transition">
+            <p class="text-5xl mb-3">{{ icon }}</p>
+            <h3 class="text-xl font-semibold mb-2">{{ title }}</h3>
+            <p class="text-gray-600">{{ text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
