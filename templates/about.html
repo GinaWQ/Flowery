@@ -1,6 +1,44 @@
-{% extends "about.html" %}
+{% extends "base.html" %}
 {% block title %}Про нас{% endblock %}
+
 {% block content %}
-<h1 class="text-3xl font-bold text-brand-dark">Про нас</h1>
-<p class="mt-4">Сторінка в розробці.</p>
+<section class="bg-white rounded-3xl p-8 md:p-12 shadow">
+    <p class="text-5xl">🌿</p>
+    <h1 class="mt-4 text-3xl md:text-4xl font-bold text-brand-dark">
+        Про Flowery
+    </h1>
+
+    <div class="mt-6 space-y-4 text-gray-700 leading-relaxed">
+        <p>
+            Flowery — квітковий магазин для особливих і звичайних днів.
+            Ми допомагаємо обрати букет, який передасть ваші почуття.
+        </p>
+        <p>
+            Флористи дбайливо підбирають квіти й складають кожну композицію
+            вручну. До букета можна додати листівку та замовити доставку.
+        </p>
+    </div>
+</section>
+
+<section class="mt-8">
+    <h2 class="text-2xl font-bold text-brand-dark text-center">
+        Наші цінності
+    </h2>
+
+    <div class="mt-5 grid gap-4 sm:grid-cols-3">
+        {% set values = [
+            ('🌷', 'Свіжість', 'Дбаємо, щоб квіти були свіжими.'),
+            ('💚', 'Турбота', 'Допомагаємо підібрати букет і догляд за ним.'),
+            ('✨', 'Творчість', 'Створюємо композиції вручну.')
+        ] %}
+
+        {% for icon, title, text in values %}
+        <article class="bg-white rounded-2xl p-5 shadow">
+            <p class="text-3xl">{{ icon }}</p>
+            <h3 class="mt-2 font-semibold">{{ title }}</h3>
+            <p class="mt-1 text-sm text-gray-600">{{ text }}</p>
+        </article>
+        {% endfor %}
+    </div>
+</section>
 {% endblock %}
