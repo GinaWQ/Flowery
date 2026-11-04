@@ -1,6 +1,80 @@
-{% extends "catalog.html" %}
+{% extends "base.html" %}
 {% block title %}Каталог{% endblock %}
+
 {% block content %}
-<h1 class="text-3xl font-bold text-brand-dark">Каталог</h1>
-<p class="mt-4">Сторінка в розробці.</p>
+<h1 class="text-3xl md:text-4xl font-bold text-brand-dark">
+    Каталог букетів
+</h1>
+<p class="mt-2 text-gray-600">Оберіть квіти для особливої нагоди або просто так.</p>
+
+{% set bouquets = [
+    {
+        'name': 'Ніжний світанок',
+        'category': 'Букети',
+        'emoji': '🌸',
+        'description': 'Ніжна композиція у рожевих відтінках.',
+        'price': 650
+    },
+    {
+        'name': 'Червона класика',
+        'category': 'Букети',
+        'emoji': '🌹',
+        'description': 'Червоні троянди для яскравих почуттів.',
+        'price': 900
+    },
+    {
+        'name': 'Сонячний настрій',
+        'category': 'Букети',
+        'emoji': '🌻',
+        'description': 'Жовті квіти, які дарують тепло.',
+        'price': 480
+    },
+    {
+        'name': 'Тюльпани у кошику',
+        'category': 'Композиції',
+        'emoji': '🌷',
+        'description': 'Весняні тюльпани у святковому оформленні.',
+        'price': 560
+    },
+    {
+        'name': 'Лавандова мрія',
+        'category': 'Композиції',
+        'emoji': '💜',
+        'description': 'Ніжна композиція з лавандовими відтінками.',
+        'price': 720
+    },
+    {
+        'name': 'Орхідея в горщику',
+        'category': 'Рослини',
+        'emoji': '🪻',
+        'description': 'Квітуча орхідея для дому або подарунка.',
+        'price': 750
+    }
+] %}
+
+<p class="mt-4 text-sm text-gray-600">У каталозі: {{ bouquets|length }} позицій</p>
+
+<div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for bouquet in bouquets %}
+    <article class="overflow-hidden rounded-2xl bg-white shadow">
+        <div class="bg-brand-light py-8 text-center text-6xl">
+            {{ bouquet.emoji }}
+        </div>
+        <div class="p-5">
+            <p class="text-sm text-brand">{{ bouquet.category }}</p>
+            <h2 class="mt-1 text-xl font-semibold text-brand-dark">
+                {{ bouquet.name }}
+            </h2>
+            <p class="mt-2 text-gray-600">{{ bouquet.description }}</p>
+            <div class="mt-5 flex items-center justify-between">
+                <span class="font-bold text-brand-dark">{{ bouquet.price }} грн</span>
+                <a href="{{ url_for('contacts') }}"
+                   class="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
+                    Замовити
+                </a>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>
 {% endblock %}
