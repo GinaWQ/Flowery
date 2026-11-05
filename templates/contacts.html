@@ -1,6 +1,75 @@
-{% extends "contacts.html" %}
-{% block title %}Каталог{% endblock %}
+
+{% extends "base.html" %}
+
+{% block title %}Контакти{% endblock %}
+
 {% block content %}
-<h1 class="text-3xl font-bold text-brand-dark">Каталог</h1>
-<p class="mt-4">Сторінка в розробці.</p>
+<div class="max-w-4xl mx-auto py-10 px-4">
+
+    <div class="text-center mb-10">
+        <h1 class="text-4xl font-bold text-brand-dark">Наші контакти</h1>
+        <p class="mt-4 text-gray-600">
+            Ми завжди раді допомогти вам обрати ідеальний букет!
+            Звертайтеся до нас з будь-якими запитаннями.
+        </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+        <div class="bg-pink-50 rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-brand-dark mb-4">
+                Як з нами зв'язатися?
+            </h2>
+
+            <p class="text-gray-700 mb-3">
+                <strong>Телефон:</strong><br>
+                <a href="tel:+380000000000" class="text-pink-600">
+                    +380 00 000 00 00
+                </a>
+            </p>
+
+            <p class="text-gray-700">
+                <strong>Email:</strong><br>
+                <a href="mailto:flowery@example.com" class="text-pink-600">
+                    flowery@example.com
+                </a>
+            </p>
+        </div>
+
+        <div class="bg-pink-50 rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-brand-dark mb-4">
+                Де нас знайти?
+            </h2>
+
+            <p class="text-gray-700 mb-3">
+                <strong>Адреса:</strong><br>
+                м. Луцьк
+            </p>
+
+            <p class="text-gray-700">
+                <strong>Графік роботи:</strong><br>
+                Понеділок – Неділя<br>
+                09:00 – 20:00
+            </p>
+        </div>
+
+    </div>
+
+    <div class="mt-8 text-center bg-white border border-pink-100 rounded-2xl p-8">
+        <h2 class="text-2xl font-bold text-brand-dark">
+            Flowery — квіти з любов'ю
+        </h2>
+        <p class="mt-3 text-gray-600">
+            Допоможемо зробити кожен ваш особливий момент
+            ще яскравішим та незабутнім.
+        </p>
+        <a href="{{ url_for('catalog') }}"
+           class="inline-block mt-5 bg-pink-500 text-white px-6 py-3 rounded-full hover:bg-pink-600">
+            Переглянути каталог
+        </a>
+    </div>
+
+</div>
 {% endblock %}
+
+
