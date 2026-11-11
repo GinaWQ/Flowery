@@ -27,13 +27,15 @@
                     class="md:hidden text-3xl text-brand px-2">☰</button>
 
             <!-- Пункти меню: на мобільних сховані, на md+ відображаються в рядок -->
-            {% set nav_items = [
-                ('index', 'Головна'),
-                ('catalog', 'Каталог'),
-                ('delivery', 'Доставка'),
-                ('about', 'Про нас'),
-                ('contacts', 'Контакти')
-            ] %}
+           {% set nav_items = [
+             ('index', 'Головна'),
+             ('shop.catalog', 'Каталог'),
+             ('search.search', 'Пошук'),
+             ('feedback.leave_feedback', 'Відгуки'),
+             ('delivery', 'Доставка'),
+             ('about', 'Про нас'),
+             ('contacts', 'Контакти')
+] %}
             <ul id="menu" class="hidden w-full mt-3 flex-col gap-1 md:mt-0 md:w-auto md:flex md:flex-row md:gap-2">
                 {% for endpoint, label in nav_items %}
                 <li>
