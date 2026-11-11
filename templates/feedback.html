@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Відгуки{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold text-brand">Залиште відгук</h1>
+
+{% if sent %}
+    <p class="mt-4 rounded-lg bg-green-100 text-green-800 p-3">Дякуємо! Ваш відгук збережено.</p>
+{% endif %}
+{% for e in errors %}
+    <p class="mt-2 text-red-600">{{ e }}</p>
+{% endfor %}
+
+<form method="post" class="mt-6 grid gap-4 max-w-lg">
+    <input name="name" value="{{ values.get('name', '') }}" placeholder="Ваше ім'я"
+           class="border rounded-lg px-3 py-2" required>
+    <input name="email" type="email" value="{{ values.get('email', '') }}"
+           placeholder="Email (необов'язково)" class="border rounded-lg px-3 py-2">
+    <select name="rating" class="border rounded-lg px-3 py-2" required>
+        <option value="">Оцінка</option>
+        {% for r in [5, 4, 3, 2, 1] %}<option value="{{ r }}">{{ r }} ★</option>{% endfor %}
+    </select>
+    <textarea name="message" rows="4" placeholder="Ваш відгук"
+              class="border rounded-lg px-3 py-2" required>{{ values.get('message', '') }}</textarea>
+    <button class="bg-brand text-white font-semibold py-2 rounded-full">Надіслати</button>
+</form>
+
+<h2 class="mt-12 text-2xl font-bold">Що кажуть клієнти</h2>
+<div class="mt-4 grid gap-4 sm:grid-cols-2">
+    {% for r in reviews %}
+    <article class="bg-white rounded-2xl p-5 shadow">
+        <p class="font-semibold">{{ r['name'] }} <span class="text-yellow-500">{{ '★' * r['rating'] }}</span></p>
+        <p class="mt-2 text-gray-700">{{ r['message'] }}</p>
+        <p class="mt-2 text-xs text-gray-400">{{ r['created_at'] }}</p>
+    </article>
+    {% else %}
+    <p class="text-gray-500">Відгуків ще немає. Будьте першим!</p>
+    {% endfor %}
+</div>
+{% endblock %}
