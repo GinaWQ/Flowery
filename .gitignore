@@ -10,3 +10,6 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+# База даних створюється автоматично при запуску
+db.sqlite
+*.sqlite3
