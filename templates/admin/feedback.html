@@ -1,0 +1,39 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Відгуки (адмін){% endblock %}
+{% block admin_content %}
+<h1 class="text-2xl font-bold mb-4">Відгуки</h1>
+<div class="overflow-x-auto bg-white rounded-2xl shadow">
+<table class="w-full text-left text-sm">
+    <thead class="bg-brand text-white">
+        <tr>
+            <th class="p-3">#</th><th class="p-3">Ім'я</th><th class="p-3">Оцінка</th>
+            <th class="p-3">Текст</th><th class="p-3">Статус</th><th class="p-3">Дії</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for r in rows %}
+        <tr class="border-t">
+            <td class="p-3">{{ r['id'] }}</td>
+            <td class="p-3">{{ r['name'] }}</td>
+            <td class="p-3">{{ r['rating'] }}</td>
+            <td class="p-3">{{ r['message'] }}</td>
+            <td class="p-3">{{ 'Показано' if r['is_published'] else 'Приховано' }}</td>
+            <td class="p-3">
+                <div class="flex gap-3">
+                    <form method="post" action="{{ url_for('admin.feedback_toggle', fid=r['id']) }}">
+                        <button class="underline">{{ 'Сховати' if r['is_published'] else 'Показати' }}</button>
+                    </form>
+                    <form method="post" action="{{ url_for('admin.feedback_delete', fid=r['id']) }}"
+                          onsubmit="return confirm('Видалити відгук?')">
+                        <button class="text-red-600 underline">Видалити</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    {% else %}
+        <tr><td class="p-3" colspan="6">Відгуків ще немає.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

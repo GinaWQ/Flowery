@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Пошук{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold text-brand">Пошук квітів</h1>
+
+<form method="get" class="mt-6 grid gap-3 sm:grid-cols-4">
+    <input name="q" value="{{ q }}" placeholder="Назва або опис"
+           class="border rounded-lg px-3 py-2 sm:col-span-2">
+    <select name="category" class="border rounded-lg px-3 py-2">
+        <option value="">Усі категорії</option>
+        {% for c in categories %}
+        <option value="{{ c }}" {{ 'selected' if c == category }}>{{ c }}</option>
+        {% endfor %}
+    </select>
+    <input name="max_price" type="number" min="0" value="{{ max_price or '' }}"
+           placeholder="Ціна до, грн" class="border rounded-lg px-3 py-2">
+    <button class="bg-brand text-white py-2 rounded-full sm:col-span-4">Знайти</button>
+</form>
+
+<div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for p in results %}
+    <article class="bg-white rounded-2xl shadow p-4">
+        <p class="text-4xl">{{ p['emoji'] }}</p>
+        <h2 class="font-semibold mt-2">{{ p['name'] }}</h2>
+        <p class="text-sm text-gray-600">{{ p['description'] }}</p>
+        <p class="mt-2 font-bold text-brand">{{ p['price'] }} грн</p>
+    </article>
+    {% else %}
+    {% if q or category or max_price is not none %}
+    <p class="text-gray-500">Нічого не знайдено.</p>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock %}
