@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<nav class="flex flex-wrap gap-4 mb-8 text-sm font-semibold">
+    <a href="{{ url_for('admin.dashboard') }}">Панель</a>
+    <a href="{{ url_for('admin.feedback_list') }}">Відгуки</a>
+    <a href="{{ url_for('admin_shop.products') }}">Товари</a>
+    <a href="{{ url_for('admin_shop.orders') }}">Замовлення</a>
+    <a href="{{ url_for('customers.customers_list') }}">Клієнти</a>
+    <a href="{{ url_for('promo.promo_list') }}">Промокоди</a>
+    <a href="{{ url_for('admin.logout') }}" class="text-red-600">Вийти</a>
+</nav>
+{% block admin_content %}{% endblock %}
+{% endblock %}

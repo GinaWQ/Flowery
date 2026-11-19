@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Кошик{% endblock %}
+{% block content %}
+<h1 class="text-3xl font-bold text-brand-dark">Кошик</h1>
+
+{% if added %}
+<p class="mt-4 rounded-lg bg-green-100 p-3 text-green-800">Товар додано до кошика.</p>
+{% endif %}
+{% if empty %}
+<p class="mt-4 rounded-lg bg-yellow-100 p-3 text-yellow-800">Кошик порожній. Додайте товар із каталогу.</p>
+{% endif %}
+
+{% if cart_items %}
+<div class="mt-6 overflow-x-auto rounded-2xl bg-white shadow">
+    <table class="w-full text-left">
+        <thead class="bg-brand text-white">
+            <tr>
+                <th class="p-3">Товар</th>
+                <th class="p-3">Ціна</th>
+                <th class="p-3">Кількість</th>
+                <th class="p-3">Сума</th>
+                <th class="p-3">Дія</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in cart_items %}
+            <tr class="border-t">
+                <td class="p-3">{{ item['emoji'] }} {{ item['name'] }}</td>
+                <td class="p-3">{{ '%.2f'|format(item['price']) }} грн</td>
+                <td class="p-3">
+                    <form method="post" action="{{ url_for('shop.cart_update', product_id=item['id']) }}"
+                          class="flex items-center gap-2">
+                        <input type="number" name="quantity" value="{{ item['quantity'] }}"
+                               min="0" max="99" class="w-20 rounded-lg border px-2 py-1"
+                               aria-label="Кількість {{ item['name'] }}">
+                        <button class="text-brand underline">Оновити</button>
+                    </form>
+                </td>
+                <td class="p-3">{{ '%.2f'|format(item['line_total']) }} грн</td>
+                <td class="p-3">
+                    <form method="post" action="{{ url_for('shop.cart_remove', product_id=item['id']) }}">
+                        <button class="text-red-600 underline">Прибрати</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="mt-6 flex flex-wrap items-center justify-between gap-4">
+    <a href="{{ url_for('shop.catalog') }}" class="text-brand underline">Повернутися до каталогу</a>
+    <p class="text-xl font-bold">Разом: {{ '%.2f'|format(total) }} грн</p>
+    <a href="{{ url_for('shop.checkout') }}"
+       class="rounded-full bg-brand px-6 py-3 font-semibold text-white hover:bg-brand-dark">
+        Оформити замовлення
+    </a>
+</div>
+{% else %}
+<div class="mt-6 rounded-2xl bg-white p-6 shadow">
+    <p class="text-gray-600">У кошику поки немає товарів.</p>
+    <a href="{{ url_for('shop.catalog') }}"
+       class="mt-4 inline-block rounded-full bg-brand px-5 py-2 font-semibold text-white">
+        Перейти до каталогу
+    </a>
+</div>
+{% endif %}
+{% endblock %}

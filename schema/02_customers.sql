@@ -1,0 +1,1 @@
+-- 02_customers.sql: заповнює C

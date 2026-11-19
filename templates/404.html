@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Сторінку не знайдено{% endblock %}
+{% block content %}
+    <div class="text-center py-16">
+        <p class="text-7xl">🥀</p>
+        <h1 class="mt-4 text-4xl font-bold text-brand-pink">404</h1>
+        <p class="mt-2 text-gray-600">Такої сторінки не існує — квіточка зів’яла.</p>
+        <a href="{{ url_for('index') }}"
+           class="inline-block mt-6 bg-brand-pink hover:bg-brand-pink-dark text-white font-semibold py-2 px-6 rounded-full">
+            На головну
+        </a>
+    </div>
+{% endblock %}

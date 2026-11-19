@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Каталог{% endblock %}
+
+{% block content %}
+<h1 class="text-3xl md:text-4xl font-bold text-brand-dark">
+    Каталог букетів
+</h1>
+<p class="mt-2 text-gray-600">Оберіть квіти для особливої нагоди або просто так.</p>
+
+<div class="mt-4 flex flex-wrap gap-3 text-sm">
+    <a href="{{ url_for('search.search') }}"
+       class="rounded-full border border-brand px-4 py-2 text-brand hover:bg-white">
+        Пошук і фільтри
+    </a>
+    <a href="{{ url_for('shop.cart') }}"
+       class="rounded-full bg-brand px-4 py-2 font-semibold text-white hover:bg-brand-dark">
+        Кошик
+    </a>
+</div>
+
+<p class="mt-4 text-sm text-gray-600">У каталозі: {{ products|length }} позицій</p>
+
+<div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {% for product in products %}
+    <article class="overflow-hidden rounded-2xl bg-white shadow">
+        <div class="bg-brand-light py-8 text-center text-6xl">
+            {{ product['emoji'] }}
+        </div>
+        <div class="p-5">
+            <p class="text-sm text-brand">{{ product['category'] }}</p>
+            <h2 class="mt-1 text-xl font-semibold text-brand-dark">
+                {{ product['name'] }}
+            </h2>
+            <p class="mt-2 text-gray-600">{{ product['description'] }}</p>
+            <div class="mt-5 flex items-center justify-between">
+                <span class="font-bold text-brand-dark">{{ '%.2f'|format(product['price']) }} грн</span>
+                <form method="post" action="{{ url_for('shop.cart_add', product_id=product['id']) }}"
+                      class="flex items-center gap-2">
+                    <input type="number" name="quantity" value="1" min="1" max="99"
+                           aria-label="Кількість" class="w-16 rounded-lg border px-2 py-1">
+                    <button class="rounded-full bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark">
+                        У кошик
+                    </button>
+                </form>
+            </div>
+        </div>
+    </article>
+    {% else %}
+    <p class="text-gray-500">Товарів поки немає.</p>
+    {% endfor %}
+</div>
+{% endblock %}
