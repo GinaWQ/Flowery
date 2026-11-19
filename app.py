@@ -1,11 +1,20 @@
-"""Flowery: вебзастосунок квіткового магазину (ЛР 03 і ЛР 04)."""
+"""Flowery: сайт магазину квітів + REST API (ЛР 03, 04, 05)."""
 import os
 
-from flask import Flask, render_template
+from flasgger import Swagger
+from flask import Flask, jsonify, render_template, request
+from werkzeug.exceptions import HTTPException
 
 from models import close_db, init_db
 from routes.admin import admin_bp
 from routes.admin_shop import admin_shop_bp
+from routes.api_core import api_bp
+from routes.api_customers import api_customers_bp
+from routes.api_feedback import api_feedback_bp
+from routes.api_orders import api_orders_bp
+from routes.api_products import api_products_bp
+from routes.api_promo import api_promo_bp
+from routes.api_v2 import api_v2_bp
 from routes.customers import customers_bp
 from routes.feedback import feedback_bp
 from routes.promo import promo_bp
@@ -19,9 +28,33 @@ app.config['ADMIN_PASSWORD'] = os.environ.get('FLOWERY_ADMIN_PASSWORD', 'admin12
 
 app.teardown_appcontext(close_db)
 
-for bp in (feedback_bp, admin_bp, search_bp, shop_bp,
-           admin_shop_bp, customers_bp, promo_bp):
+# Swagger UI на /apidocs/ (рівень 2)
+swagger = Swagger(app, template={
+    'info': {
+        'title': 'Flowery API',
+        'version': '1.0',
+        'description': 'REST API квіткового магазину Flowery',
+    },
+})
+
+for bp in (admin_bp, admin_shop_bp, feedback_bp, search_bp, shop_bp,
+           customers_bp, promo_bp,
+           api_bp, api_products_bp, api_orders_bp, api_customers_bp,
+           api_promo_bp, api_feedback_bp, api_v2_bp):
     app.register_blueprint(bp)
+
+
+@app.errorhandler(Exception)
+def handle_error(err):
+    """Для /api/... повертає JSON. Для сторінок сайту лишає звичайні HTML-сторінки."""
+    is_api = request.path.startswith('/api/')
+    if isinstance(err, HTTPException):
+        if not is_api:
+            return err
+        return jsonify({'error': err.description, 'status': err.code}), err.code
+    if is_api:
+        return jsonify({'error': 'Внутрішня помилка сервера', 'status': 500}), 500
+    return 'Внутрішня помилка сервера', 500
 
 
 @app.route('/')
@@ -42,11 +75,6 @@ def delivery():
 @app.route('/contacts')
 def contacts():
     return render_template('contacts.html')
-
-@app.errorhandler(404)
-def page_not_found(error):
-    """Власна сторінка помилки 404."""
-    return render_template("404.html"), 404
 
 
 if __name__ == '__main__':
