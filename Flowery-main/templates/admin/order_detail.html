@@ -1,0 +1,43 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Замовлення №{{ order['id'] }}{% endblock %}
+{% block admin_content %}
+<h1 class="text-2xl font-bold">Замовлення №{{ order['id'] }}</h1>
+
+<div class="mt-5 grid gap-6 lg:grid-cols-2">
+    <section class="rounded-2xl bg-white p-5 shadow">
+        <h2 class="text-lg font-semibold">Дані клієнта</h2>
+        <p class="mt-3">{{ order['customer_name'] }}</p>
+        <p>{{ order['phone'] }}</p>
+        {% if order['email'] %}<p>{{ order['email'] }}</p>{% endif %}
+        <p class="mt-2">{{ order['delivery_address'] }}</p>
+        <p class="mt-2 text-sm text-gray-500">Створено: {{ order['created_at'] }}</p>
+    </section>
+
+    <section class="rounded-2xl bg-white p-5 shadow">
+        <h2 class="text-lg font-semibold">Позиції замовлення</h2>
+        <ul class="mt-3 grid gap-2">
+        {% for item in items %}
+            <li class="flex justify-between gap-3 border-b pb-2">
+                <span>{{ item['product_name'] }} × {{ item['quantity'] }}</span>
+                <span>{{ '%.2f'|format(item['unit_price'] * item['quantity']) }} грн</span>
+            </li>
+        {% endfor %}
+        </ul>
+        <p class="mt-4 text-lg font-bold">Разом: {{ '%.2f'|format(order['total']) }} грн</p>
+    </section>
+</div>
+
+<form method="post" action="{{ url_for('admin_shop.order_update_status', order_id=order['id']) }}"
+      class="mt-6 flex flex-wrap items-end gap-3 rounded-2xl bg-white p-5 shadow">
+    <label class="grid gap-1">
+        <span class="font-medium">Статус: {{ status_labels[order['status']] }}</span>
+        <select name="status" class="rounded-lg border px-3 py-2">
+            {% for value, label in statuses %}
+            <option value="{{ value }}" {{ 'selected' if value == order['status'] }}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </label>
+    <button class="rounded-full bg-brand px-5 py-2 font-semibold text-white">Оновити статус</button>
+    <a href="{{ url_for('admin_shop.orders') }}" class="text-brand underline">До списку</a>
+</form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Замовлення (адмін){% endblock %}
+{% block admin_content %}
+<h1 class="text-2xl font-bold">Замовлення</h1>
+<div class="mt-5 overflow-x-auto rounded-2xl bg-white shadow">
+    <table class="w-full text-left text-sm">
+        <thead class="bg-brand text-white">
+            <tr>
+                <th class="p-3">№</th><th class="p-3">Клієнт</th><th class="p-3">Телефон</th>
+                <th class="p-3">Сума</th><th class="p-3">Статус</th>
+                <th class="p-3">Дата</th><th class="p-3">Деталі</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr class="border-t">
+                <td class="p-3">{{ order['id'] }}</td>
+                <td class="p-3">{{ order['customer_name'] }}</td>
+                <td class="p-3">{{ order['phone'] }}</td>
+                <td class="p-3">{{ '%.2f'|format(order['total']) }} грн</td>
+                <td class="p-3">{{ status_labels[order['status']] }}</td>
+                <td class="p-3">{{ order['created_at'] }}</td>
+                <td class="p-3">
+                    <a class="text-brand underline"
+                       href="{{ url_for('admin_shop.order_detail', order_id=order['id']) }}">
+                        Переглянути
+                    </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr><td class="p-3" colspan="7">Замовлень поки немає.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
