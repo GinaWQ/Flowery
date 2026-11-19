@@ -1,0 +1,105 @@
+
+{% extends "admin/base_admin.html" %}
+
+{% block title %}Клієнти — Flowery{% endblock %}
+
+{% block admin_content %}
+<div class="max-w-6xl mx-auto">
+    <h1 class="text-2xl font-bold text-brand mb-6">
+        Клієнти магазину
+    </h1>
+
+    <form method="GET" class="mb-6 flex gap-2">
+        <input
+            type="text"
+            name="q"
+            value="{{ query }}"
+            placeholder="Пошук за ім'ям, телефоном або email"
+            class="border rounded-lg px-4 py-2 flex-1"
+        >
+        <button
+            type="submit"
+            class="bg-brand text-white rounded-lg px-5 py-2"
+        >
+            Знайти
+        </button>
+    </form>
+
+    <div class="bg-white rounded-xl shadow p-5 mb-8">
+        <h2 class="text-lg font-semibold mb-4">
+            Додати клієнта
+        </h2>
+
+        <form method="POST"
+              action="{{ url_for('customers.add_customer') }}"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <input name="full_name" required
+                   placeholder="Ім'я та прізвище"
+                   class="border rounded-lg px-3 py-2">
+
+            <input name="phone" required
+                   placeholder="Номер телефону"
+                   class="border rounded-lg px-3 py-2">
+
+            <input name="email" type="email"
+                   placeholder="Email"
+                   class="border rounded-lg px-3 py-2">
+
+            <input name="address"
+                   placeholder="Адреса"
+                   class="border rounded-lg px-3 py-2">
+
+            <textarea name="notes"
+                      placeholder="Примітки"
+                      class="border rounded-lg px-3 py-2 md:col-span-2"></textarea>
+
+            <button type="submit"
+                    class="bg-brand text-white rounded-lg px-5 py-2">
+                Додати клієнта
+            </button>
+        </form>
+    </div>
+
+    <div class="bg-white rounded-xl shadow overflow-x-auto">
+        <table class="w-full text-left">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="p-3">Ім'я</th>
+                    <th class="p-3">Телефон</th>
+                    <th class="p-3">Email</th>
+                    <th class="p-3">Адреса</th>
+                    <th class="p-3">Дія</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for customer in customers %}
+                <tr class="border-t">
+                    <td class="p-3">{{ customer.full_name }}</td>
+                    <td class="p-3">{{ customer.phone }}</td>
+                    <td class="p-3">{{ customer.email or '—' }}</td>
+                    <td class="p-3">{{ customer.address or '—' }}</td>
+                    <td class="p-3">
+                        <form method="POST"
+                              action="{{ url_for('customers.delete_customer', customer_id=customer.id) }}"
+                              onsubmit="return confirm('Видалити клієнта?')">
+                            <button type="submit"
+                                    class="text-red-600 hover:underline">
+                                Видалити
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="p-4 text-center text-gray-500">
+                        Клієнтів поки немає.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
