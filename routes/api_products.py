@@ -12,11 +12,6 @@ PRODUCT_COLUMNS = 'id, name, category, price, emoji, description, stock, is_acti
 
 
 def _validate(data, partial=False):
-    """Перевіряє тіло запиту. Повертає (очищені_дані, список_помилок).
-
-    partial=False — для POST і PUT: обовʼязкові name, category, price.
-    partial=True  — для PATCH: передані поля перевіряються, решта ігнорується.
-    """
     if not isinstance(data, dict):
         return None, ['Тіло запиту має бути JSON-обʼєктом']
 
@@ -85,15 +80,6 @@ def list_products():
     responses:
       200:
         description: Список товарів
-        schema:
-          type: object
-          properties:
-            products:
-              type: array
-              items:
-                type: object
-            count:
-              type: integer
     """
     category = request.args.get('category')
     db = get_db()
@@ -152,7 +138,7 @@ def create_product():
             stock: {type: integer, example: 6}
     responses:
       201:
-        description: Товар створено (у заголовку Location — адреса нового ресурсу)
+        description: Товар створено (у заголовку Location - адреса нового ресурсу)
       400:
         description: Помилка валідації
       409:
@@ -299,13 +285,3 @@ def delete_product(pid):
     if cur.rowcount == 0:
         return json_error('Товар не знайдено', 404)
     return '', 204
-```[cite: 1]
-
-3. Збережи (`Ctrl + S`), закрий Блокнот, перевір синтаксис і закоміть:
-```powershell
-python -m py_compile routes\api_products.py
-git add routes\api_products.py
-git commit -m "feat(api): CRUD товарів: GET, POST, PUT, PATCH, DELETE з валідацією"
-```[cite: 1]
-
-Після цього відкривай `notepad routes\api_orders.py` і зроби те саме для замовлень[cite: 1].
