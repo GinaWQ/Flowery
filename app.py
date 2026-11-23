@@ -76,6 +76,11 @@ def delivery():
 def contacts():
     return render_template('contacts.html')
 
+@app.route('/api-demo')
+def api_demo():
+    """Демонстраційна сторінка: клієнт до REST API."""
+    return render_template('api-demo.html')
+
 
 if __name__ == '__main__':
     with app.app_context():
