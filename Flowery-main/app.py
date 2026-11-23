@@ -48,6 +48,11 @@ def page_not_found(error):
     """Власна сторінка помилки 404."""
     return render_template("404.html"), 404
 
+@app.route('/api-demo')
+def api_demo():
+    """Демонстраційна сторінка: клієнт до REST API."""
+    return render_template('api-demo.html')
+
 
 if __name__ == '__main__':
     with app.app_context():
