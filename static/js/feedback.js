@@ -1,7 +1,3 @@
-// Блок відгуків. Заповнює A на етапі 1.// ============================================
-// Блок «Відгуки». Файл учасника A.
-// ============================================
-
 const feedbackUI = {
     list: document.getElementById('feedback-list'),
     message: document.getElementById('feedback-message'),
@@ -91,3 +87,5 @@ feedbackUI.form.addEventListener('submit', async (event) => {
 
 // Початкове завантаження
 loadFeedback();
+
+// Блок відгуків. Заповнює A на етапі 1.

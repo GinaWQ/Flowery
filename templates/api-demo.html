@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Демо API{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/api-demo.css') }}">
+
+<h1 class="text-3xl md:text-4xl font-bold text-brand mb-2">🌷 Квітковий API у дії</h1>
+<p class="text-gray-600 mb-8">Ця сторінка отримує дані з нашого API і додає нові записи. Усі дані зберігаються в базі.</p>
+
+<div class="grid gap-8 lg:grid-cols-2">
+    {% include "partials/products_block.html" %}
+    {% include "partials/customers_block.html" %}
+</div>
+
+<div class="mt-10">
+    {% include "partials/feedback_block.html" %}
+</div>
+
+{# Скрипти підключаємо ПІСЛЯ HTML, тому всі елементи вже існують #}
+<script src="{{ url_for('static', filename='js/api-common.js') }}"></script>
+<script src="{{ url_for('static', filename='js/products.js') }}"></script>
+<script src="{{ url_for('static', filename='js/customers.js') }}"></script>
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+/* Стилі для демонстраційної сторінки /api-demo. Файл учасника A. */
+
+.hidden {
+    display: none !important;
+}
+
+.block-message {
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.block-message.success {
+    background: #e6f7ec;
+    color: #1b6e3a;
+}
+
+.block-message.error {
+    background: #fde8ec;
+    color: #a61e4d;
+}
