@@ -345,3 +345,70 @@ def delete_promo(promo_id):
 
     finally:
         db.close()
+
+@api_promo_bp.route('/promo/validate', methods=['POST'])
+def check_promo():
+    """Перевірити промокод і розрахувати знижку."""
+    data = request.get_json(silent=True)
+
+    if not isinstance(data, dict):
+        return jsonify({'error': 'Потрібно передати JSON'}), 400
+
+    code = data.get('code')
+    subtotal = data.get('subtotal')
+
+    if not isinstance(code, str) or not code.strip():
+        return jsonify({'error': 'Вкажіть промокод'}), 400
+
+    if (
+        not isinstance(subtotal, (int, float))
+        or isinstance(subtotal, bool)
+        or not (0 <= subtotal < float('inf'))
+    ):
+        return jsonify({'error': 'Некоректна сума замовлення'}), 400
+
+    db = get_db()
+
+    try:
+        promo = db.execute(
+            'SELECT * FROM promo_codes WHERE code = ?',
+            (code.strip().upper(),)
+        ).fetchone()
+
+        if promo is None:
+            return jsonify({'error': 'Промокод не знайдено'}), 404
+
+        if not promo['is_active']:
+            return jsonify({'error': 'Промокод неактивний'}), 400
+
+        if subtotal < promo['min_order_amount']:
+            return jsonify({
+                'error': 'Не досягнуто мінімальної суми замовлення'
+            }), 400
+
+        if promo['expires_at']:
+            expiry_date = datetime.strptime(
+                promo['expires_at'], '%Y-%m-%d'
+            ).date()
+
+            if expiry_date < datetime.now().date():
+                return jsonify({'error': 'Термін дії промокоду завершився'}), 400
+
+        discount_percent = promo['discount_percent']
+        discount_amount = round(
+            subtotal * discount_percent / 100, 2
+        )
+        total = round(subtotal - discount_amount, 2)
+
+        return jsonify({
+            'valid': True,
+            'code': promo['code'],
+            'discount_percent': discount_percent,
+            'subtotal': subtotal,
+            'discount_amount': discount_amount,
+            'total': total
+        }), 200
+
+    finally:
+        db.close()
+
