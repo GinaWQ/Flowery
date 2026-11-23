@@ -1,1 +1,75 @@
-<!-- Блок клієнтів і промокодів. Заповнює учасник C. -->
+
+<section class="bg-white rounded-2xl shadow p-6">
+    <h2 class="text-2xl font-bold text-brand mb-4">👩‍🌾 Клієнти</h2>
+
+    <div id="customers-message" class="block-message hidden"></div>
+
+    <div id="customers-loading" class="hidden text-gray-500 mb-3">
+        ⏳ Завантаження клієнтів...
+    </div>
+
+    <form id="customer-form" class="grid gap-3 mb-6">
+        <input
+            id="customer-name"
+            placeholder="Імʼя та прізвище"
+            class="border rounded-lg px-3 py-2"
+            required
+        >
+
+        <input
+            id="customer-phone"
+            type="tel"
+            placeholder="Телефон, наприклад +38 050 123 45 67"
+            class="border rounded-lg px-3 py-2"
+            required
+        >
+
+        <input
+            id="customer-email"
+            type="email"
+            placeholder="Email (необов'язково)"
+            class="border rounded-lg px-3 py-2"
+        >
+
+        <button
+            type="submit"
+            class="bg-brand text-white font-semibold py-2 rounded-full hover:bg-brand-dark transition"
+        >
+            Зберегти клієнта
+        </button>
+    </form>
+
+    <div id="customers-list" class="grid gap-3"></div>
+
+    <hr class="my-8">
+
+    <h2 class="text-2xl font-bold text-brand mb-4">🎟️ Промокод</h2>
+
+    <div id="promo-message" class="block-message hidden"></div>
+
+    <form id="promo-form" class="grid gap-3">
+        <input
+            id="promo-code"
+            placeholder="Наприклад FLOWER10"
+            class="border rounded-lg px-3 py-2"
+            required
+        >
+
+        <input
+            id="promo-subtotal"
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Сума замовлення, грн"
+            class="border rounded-lg px-3 py-2"
+            required
+        >
+
+        <button
+            type="submit"
+            class="bg-brand text-white font-semibold py-2 rounded-full hover:bg-brand-dark transition"
+        >
+            Перевірити знижку
+        </button>
+    </form>
+</section>
