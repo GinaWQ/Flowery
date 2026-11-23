@@ -1,1 +1,32 @@
-<!-- Блок товарів. Заповнює учасник B. -->
+<section class="bg-white rounded-2xl shadow p-6">
+    <h2 class="text-2xl font-bold text-brand mb-4">💐 Букети</h2>
+
+    <div id="products-message" class="block-message hidden"></div>
+    <div id="products-loading" class="hidden text-gray-500 mb-3">⏳ Завантаження букетів...</div>
+
+    <form id="product-form" class="grid gap-3 mb-6">
+        <input id="product-name" placeholder="Назва букета" class="border rounded-lg px-3 py-2" required>
+        <div class="grid grid-cols-2 gap-3">
+            <select id="product-category" class="border rounded-lg px-3 py-2">
+                <option value="Букети">Букети</option>
+                <option value="Композиції">Композиції</option>
+                <option value="Рослини">Рослини</option>
+            </select>
+            <select id="product-emoji" class="border rounded-lg px-3 py-2">
+                <option value="🌸">🌸 Піони</option>
+                <option value="🌹">🌹 Троянди</option>
+                <option value="🌷">🌷 Тюльпани</option>
+                <option value="🌻">🌻 Соняшники</option>
+                <option value="💐">💐 Мікс</option>
+                <option value="🪻">🪻 Лаванда</option>
+            </select>
+        </div>
+        <input id="product-price" type="number" min="1" step="1" placeholder="Ціна, грн" class="border rounded-lg px-3 py-2" required>
+        <input id="product-description" placeholder="Опис (необов'язково)" class="border rounded-lg px-3 py-2">
+        <button type="submit" class="bg-brand text-white font-semibold py-2 rounded-full hover:bg-brand-dark transition">
+            Додати букет
+        </button>
+    </form>
+
+    <div id="products-list" class="grid gap-4 sm:grid-cols-2"></div>
+</section>
