@@ -24,33 +24,13 @@ def list_feedback():
     ).fetchall()
     return jsonify({'feedback': [dict(r) for r in rows], 'count': len(rows)}), 200
 
+def validate_feedback(data):
+    """Перевіряє відгук. Повертає список помилок (порожній, якщо дані коректні).
 
-@api_feedback_bp.route('/feedback', methods=['POST'])
-def create_feedback():
-    """Залишити відгук.
-    ---
-    tags: [Відгуки]
-    parameters:
-      - name: body
-        in: body
-        required: true
-        schema:
-          type: object
-          required: [name, message, rating]
-          properties:
-            name: {type: string, example: Марина}
-            email: {type: string, example: marina@example.com}
-            message: {type: string, example: Троянди свіжі, доставили вчасно 🌹}
-            rating: {type: integer, minimum: 1, maximum: 5, example: 5}
-    responses:
-      201:
-        description: Відгук збережено
-      400:
-        description: Помилка валідації
+    Не звертається до бази і не використовує запит.
     """
-    data = request.get_json(silent=True)
     if not isinstance(data, dict):
-        return json_error('Тіло запиту має бути JSON-обʼєктом', 400)
+        return ['Тіло запиту має бути JSON-обʼєктом']
 
     errors = []
     name = data.get('name')
@@ -59,16 +39,25 @@ def create_feedback():
     email = data.get('email')
 
     if not isinstance(name, str) or not name.strip():
-        errors.append("name: непорожній рядок")
+        errors.append('name: непорожній рядок')
     if not isinstance(message, str) or not message.strip():
         errors.append('message: непорожній рядок')
     elif len(message) > 1000:
         errors.append('message: не більше 1000 символів')
+    # bool — підклас int у Python, тому відсіюємо True/False окремо
     if not isinstance(rating, int) or isinstance(rating, bool) or not 1 <= rating <= 5:
         errors.append('rating: ціле число від 1 до 5')
     if email is not None and (not isinstance(email, str) or '@' not in email):
         errors.append('email: некоректна адреса або null')
 
+    return errors
+
+
+@api_feedback_bp.route('/feedback', methods=['POST'])
+def create_feedback():
+    """Залишити відгук. ..."""
+    data = request.get_json(silent=True)
+    errors = validate_feedback(data)
     if errors:
         return json_error('; '.join(errors), 400)
 
