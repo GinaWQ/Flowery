@@ -52,10 +52,39 @@ def validate_feedback(data):
 
     return errors
 
-
 @api_feedback_bp.route('/feedback', methods=['POST'])
 def create_feedback():
-    """Залишити відгук. ..."""
+    """Залишити відгук.
+    ---
+    tags: [Відгуки]
+    parameters:
+      - name: body
+        in: body
+        required: true
+        schema:
+          type: object
+          required: [name, message, rating]
+          properties:
+            name: {type: string, example: Марина}
+            email: {type: string, example: marina@example.com}
+            message: {type: string, example: Троянди свіжі, доставили вчасно 🌹}
+            rating: {type: integer, minimum: 1, maximum: 5, example: 5}
+    responses:
+      201:
+        description: Відгук збережено
+      400:
+        description: Помилка валідації
+    """
+    data = request.get_json(silent=True)
+    if not isinstance(data, dict):
+        return json_error('Тіло запиту має бути JSON-обʼєктом', 400)
+
+    errors = []
+    name = data.get('name')
+    message = data.get('message')
+    rating = data.get('rating')
+    email = data.get('email')
+
     data = request.get_json(silent=True)
     errors = validate_feedback(data)
     if errors:
