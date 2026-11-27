@@ -13,3 +13,7 @@ Thumbs.db
 # База даних створюється автоматично при запуску
 db.sqlite
 *.sqlite3
+# Тести і покриття
+.pytest_cache/
+.coverage
+htmlcov/
