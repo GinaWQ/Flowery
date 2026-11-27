@@ -24,6 +24,33 @@ def list_feedback():
     ).fetchall()
     return jsonify({'feedback': [dict(r) for r in rows], 'count': len(rows)}), 200
 
+def validate_feedback(data):
+    """Перевіряє відгук. Повертає список помилок (порожній, якщо дані коректні).
+
+    Не звертається до бази і не використовує запит.
+    """
+    if not isinstance(data, dict):
+        return ['Тіло запиту має бути JSON-обʼєктом']
+
+    errors = []
+    name = data.get('name')
+    message = data.get('message')
+    rating = data.get('rating')
+    email = data.get('email')
+
+    if not isinstance(name, str) or not name.strip():
+        errors.append('name: непорожній рядок')
+    if not isinstance(message, str) or not message.strip():
+        errors.append('message: непорожній рядок')
+    elif len(message) > 1000:
+        errors.append('message: не більше 1000 символів')
+    # bool — підклас int у Python, тому відсіюємо True/False окремо
+    if not isinstance(rating, int) or isinstance(rating, bool) or not 1 <= rating <= 5:
+        errors.append('rating: ціле число від 1 до 5')
+    if email is not None and (not isinstance(email, str) or '@' not in email):
+        errors.append('email: некоректна адреса або null')
+
+    return errors
 
 @api_feedback_bp.route('/feedback', methods=['POST'])
 def create_feedback():
@@ -58,17 +85,8 @@ def create_feedback():
     rating = data.get('rating')
     email = data.get('email')
 
-    if not isinstance(name, str) or not name.strip():
-        errors.append("name: непорожній рядок")
-    if not isinstance(message, str) or not message.strip():
-        errors.append('message: непорожній рядок')
-    elif len(message) > 1000:
-        errors.append('message: не більше 1000 символів')
-    if not isinstance(rating, int) or isinstance(rating, bool) or not 1 <= rating <= 5:
-        errors.append('rating: ціле число від 1 до 5')
-    if email is not None and (not isinstance(email, str) or '@' not in email):
-        errors.append('email: некоректна адреса або null')
-
+    data = request.get_json(silent=True)
+    errors = validate_feedback(data)
     if errors:
         return json_error('; '.join(errors), 400)
 
